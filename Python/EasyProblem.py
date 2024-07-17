@@ -132,3 +132,64 @@ def findMedianSortedArrays(nums1, nums2):
 
 n = findMedianSortedArrays([1,2], [3,4])
 print(n)
+
+
+def longestPalindrome(s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        ostrlpalin = ""
+        for j in range(0,len(s)):
+            for i in range(len(s),j-1,-1):
+                lpalin=  s[j:i]
+                if lpalin==lpalin[::-1]:
+                  if len(ostrlpalin)<=len(lpalin):
+                        ostrlpalin = lpalin
+                  break
+                    
+        
+        print(ostrlpalin)
+        return ostrlpalin
+
+longestPalindrome("aabbaavvv")
+longestPalindrome("bb")
+
+
+#Daily challenge Given the root of a binary tree, each node in the tree has a distinct value.
+#After deleting all nodes with a value in to_delete, we are left with a forest (a disjoint union of trees).
+#Return the roots of the trees in the remaining forest. You may return the result in any order.
+
+# Definition for a binary tree node.
+class TreeNode(object):
+     def __init__(self, val=0, left=None, right=None):
+         self.val = val
+         self.left = left
+         self.right = right
+    
+class Solution:
+    def delNodes(self, root: Optional[TreeNode], to_delete: List[int]) -> List[TreeNode]:
+        def disintegratedNodes(root):
+            if root is None:
+                return None
+            
+            root.left = disintegratedNodes(root.left)
+            root.right = disintegratedNodes(root.right)
+            if root.val not in s:
+                return root
+            if root.left:
+                ans.append(root.left)
+            if root.right:
+                ans.append(root.right)
+            return None
+
+        s = set(to_delete)
+        print(s)
+
+        ans = []
+        if disintegratedNodes(root):
+            ans.append(root)
+        return ans
+
+tr = TreeNode(1,2,3)
+delNodes(tr,[1,2])
