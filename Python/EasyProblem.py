@@ -168,7 +168,8 @@ class TreeNode(object):
          self.right = right
     
 class Solution:
-    def delNodes(self, root: Optional[TreeNode], to_delete: List[int]) -> List[TreeNode]:
+    #def delNodes(self, root: [TreeNode], to_delete: list[int]) -> List[TreeNode]:
+      # depth first search , iterate over all nodes
         def disintegratedNodes(root):
             if root is None:
                 return None
@@ -183,13 +184,93 @@ class Solution:
                 ans.append(root.right)
             return None
 
-        s = set(to_delete)
-        print(s)
+        #s = set(to_delete) #A set is a collection which is unordered, unchangeable*, and unindexed.
+        # set contains only unique values
+       # print(s)
 
         ans = []
-        if disintegratedNodes(root):
-            ans.append(root)
-        return ans
+        #if disintegratedNodes(root):
+            #ans.append(root)
+            #return ans
 
 tr = TreeNode(1,2,3)
-delNodes(tr,[1,2])
+#delNodes(tr,[1,2])
+
+# Graph Search Problem
+# Adjancy matrix (too much space and difficult ot insert take quadratic time for 2d array) adjacency list(each element its own row)
+
+# DFS depth first search
+'''fun visit(N):
+    if N is not Visited:
+      visit(N)'''
+#BFS breadth first search (iterate direct children and than grand children)
+
+#cnt1 = Counter() use to count object in array [1,1,2,3,2] -> counter {"1":2, "2":2, "3":1}
+
+
+def countPairs(self, root: TreeNode, distance: int) -> int:
+        # depth first search algo
+        def minimumDistance(root,distanceCnt,totalDistance):
+            if root is None or totalDistance >= distance:
+                return
+            if root.left is None and root.right is None:
+                distanceCnt[totalDistance] += 1
+                return
+            minimumDistance(root.left,distanceCnt,totalDistance+1)
+            minimumDistance(root.right,distanceCnt,totalDistance+1)
+
+        if root is None:
+           return 0
+        ans = self.countPairs(root.left, distance) + self.countPairs(
+            root.right, distance
+        ) 
+        
+        print(root,distance,1)
+
+        distanceCnt1 = Counter()
+        distanceCnt2 = Counter()
+        minimumDistance(root.left, distanceCnt1, 1)
+        minimumDistance(root.right, distanceCnt2, 1)
+        print(distanceCnt1)
+        print(distanceCnt2)
+        for k1, v1 in distanceCnt1.items():
+            for k2, v2 in distanceCnt2.items():
+                if k1 + k2 <= distance:
+                    ans += v1 * v2
+
+        return ans
+
+
+def palindrome(inputString):
+    if len(inputString)==1 or len(inputString)==0:
+        return len(inputString)
+    
+    freq = {}
+    for c in inputString:
+        freq[c] = freq.get(c, 0) + 1
+    
+    freqList = {}
+    for key,val in enumerate(inputString):
+      for j in range(key+1, len(inputString)): 
+        if inputString[j]==val:
+          freqList.setdefault(val, []).append(inputString[j])
+    
+    print(freqList)
+    print(freq)
+    lenPalin = 0
+    bindividualVal=False
+    for value in freq:
+        if freq[value]%2==0:
+            lenPalin+=freq[value]
+        elif bindividualVal==False:
+            lenPalin+=freq[value]
+            bindividualVal=True
+        else:
+            lenPalin+=freq[value]-1
+        
+        
+    print(lenPalin,freq)
+    return lenPalin
+    #freq = {a: 1, b: 1, c: 4, d: 2}
+
+print(palindrome("aaaabbbdcccc"))
