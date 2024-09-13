@@ -123,27 +123,30 @@ def visualize_grid(grid, path, start, goal):
                 print(". ", end="")
         print()
 
-def main():
-    rows, cols = 5, 4
-
-    # Initialize the grid
-    grid = [[0 for _ in range(cols)] for _ in range(rows)]
+def findShortestPath(nrow,ncolumn,startCoord,endCoordinate):
+        # Initialize the grid
+    grid = [[0 for _ in range(ncolumn)] for _ in range(nrow)]
 
     # Input obstacles
     grid[3][0] = 1
-
-    # Input start and goal coordinates
-    start = Coordinate(0, 0)
-    goal = Coordinate(4, 0)
-
     # Find the path using AStar
-    path, found = AStar(grid, start, goal)
+    path, found = AStar(grid, startCoord, endCoordinate)
+    print(path)
     if found:
         print("Path found:")
-        visualize_grid(grid, path, start, goal)
+        visualize_grid(grid, path, startCoord, endCoordinate)
     else:
         print("No path found.")
         visualize_grid(grid, [], start, goal)
+
+
+def main():
+    rows, cols = 5, 4
+      # Input start and goal coordinates
+    start = Coordinate(0, 0)
+    goal = Coordinate(4, 0)
+    findShortestPath(rows,cols,start,goal)
+
 
 if __name__ == "__main__":
     main()
