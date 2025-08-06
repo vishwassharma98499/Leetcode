@@ -1,3 +1,4 @@
+from typing import List
 '''Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
 You may assume that each input would have exactly one solution, and you may not use the same element twice.
 You can return the answer in any order. '''
@@ -167,6 +168,20 @@ class TreeNode(object):
          self.left = left
          self.right = right
     
+def maxDepth(root):
+    if not root:
+        return 0
+    return max(maxDepth(root.left),maxDepth(root.right))+1
+
+def calcDepth(root):
+         if None ==root:
+            return 0
+         else:
+            print(root.val)
+            leftsum = self.calcDepth(root.left)
+            rightsum = self.calcDepth(root.right)
+            finalval = max(leftsum,rightsum)
+            return finalval +1
 class Solution:
     #def delNodes(self, root: [TreeNode], to_delete: list[int]) -> List[TreeNode]:
       # depth first search , iterate over all nodes
@@ -193,7 +208,30 @@ class Solution:
             #ans.append(root)
             #return ans
 
-tr = TreeNode(1,2,3)
+
+def maxPathSum(root: TreeNode) -> int:
+
+        maxpathval  = float('-inf')
+        def maxpath(node):
+            nonlocal maxpathval
+            print(type(node))
+            if not node or "TreeNode" != node.__class__.__name__:
+                return 0
+            else:
+                nleftPath =  max(maxpath(node.left) ,0)
+                nrightPath =  max(maxpath(node.right),0)
+                ntotalPath =   nrightPath+ node.val + nleftPath
+                totalPath1 =   node.val + max(nleftPath, nrightPath)
+
+                maxpathval = max(maxpathval, ntotalPath)
+                return totalPath1
+        
+        maxpath(root)
+
+#tr = TreeNode(1,2,3)
+#maxPathSum(tr)
+#print(tr)
+
 #delNodes(tr,[1,2])
 
 # Graph Search Problem
@@ -273,4 +311,130 @@ def palindrome(inputString):
     return lenPalin
     #freq = {a: 1, b: 1, c: 4, d: 2}
 
-print(palindrome("aaaabbbdcccc"))
+def longestConsecutive( nums: List[int]) -> int:
+        num_set = set(nums)
+        print(num_set)
+       
+        print(num_set)
+        lsize = 0
+        lcurrentSize = 0
+        for x in num_set:
+            if x-1 not in num_set:
+                lcurrentSize = 1
+                current_num = x
+              
+                while current_num + 1 in num_set:
+                      lcurrentSize +=1
+                      current_num +=1
+                
+                lsize = max(lcurrentSize,lsize)
+        
+        return lsize
+
+''' if nums[x]+1== nums[x+1] :
+                lcurrentSize +=1
+                if lcurrentSize > lsize:
+                    lsize = lcurrentSize
+            elif nums[x]== nums[x+1]:
+                continue
+            else:
+                if lcurrentSize > lsize:
+                    lsize = lcurrentSize
+                lcurrentSize= 1
+            
+    return lsize'''
+
+
+def summaryRanges(nums: List[int]) -> List[str]:
+        ranges = [] # [start, end] or [x, y]
+        for n in nums:
+            if ranges and ranges[-1][1] == n-1:
+                ranges[-1][1] = n
+            else:
+                ranges.append([n, n])
+
+        return [f'{x}->{y}' if x != y else f'{x}' for x, y in ranges]
+
+def minSubArrayLenSlidingWindow( target: int, nums: List[int]) -> int:
+        n = len(nums)
+        left = 0
+        current_sum = 0
+        min_length = float('inf')
+
+        for right in range(n):
+            current_sum += nums[right]
+            
+            while current_sum >= target:
+                print( min_length,right - left + 1,nums[left])
+                min_length = min(min_length, right - left + 1)
+                current_sum -= nums[left]
+                left += 1
+
+        return min_length if min_length != float('inf') else 0
+
+
+def prefixSum(arr):
+    print(arr)
+    for i in range(1,len(arr)):
+        arr[i]+=arr[i-1]
+    print(arr)
+    return arr
+    
+prefixSum([1,2,3,5,6,8,3])
+
+def twopointerIspalindrome(str): # 2(n)
+    start = 0
+    end = len(str) -1
+
+    while start < end:
+        if str[start]!=str[end]:
+            return False
+        start +=1
+        end-=1
+    return True
+
+
+def hasCycleTwoPointer( head: ListNode) -> bool:
+        slow_pointer = head
+        fast_pointer = head
+        while fast_pointer and fast_pointer.next:
+            slow_pointer = slow_pointer.next
+            fast_pointer = fast_pointer.next.next
+            if slow_pointer == fast_pointer:
+                return True
+        return False
+
+def fullJustify(words, maxWidth):
+    result, current_line, current_width = [], [], 0
+    
+    for word in words:
+        if current_width + len(word) + len(current_line) > maxWidth:
+            for i in range(maxWidth - current_width):
+                current_line[i % (len(current_line) - 1 or 1)] += ' '
+            result.append(''.join(current_line))
+            current_line, current_width = [], 0
+        current_line.append(word)
+        current_width += len(word)
+    
+    last_line = ' '.join(current_line).ljust(maxWidth)
+    result.append(last_line)
+    
+    return result
+
+
+words = ["This", "is", "an", "example", "of", "text", "justification."]
+maxWidth = 16
+result = fullJustify(words, maxWidth)
+for line in result:
+    print(f"'{line}'")
+    
+#print(twopointerIspalindrome("abababbaba"))
+
+#nums = [12,28,1,83,1,4,25,26,25,2,25,25,25,12]
+#print(minSubArrayLenSlidingWindow(213,nums))
+#nums = [0,1,2,4,5,7]
+#print(summaryRanges(nums))
+
+#nums =[2,1,2,1,0]
+#longestConsecutive(nums)
+#print(palindrome("aaaabbbdcccc"))
